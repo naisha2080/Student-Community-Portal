@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style type="text/tailwindcss">
+        html {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* targets the <p> tags around each field.
+        */
+        form p {
+            @apply mb-4;
+        }
+
+        /*  targets the <label> for "Username", "Password", etc.
+        */
+        form label {
+            @apply block font-semibold text-gray-700 mb-1;
+        }
+
+        /* This targets all <input> fields.
+        */
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="password"] {
+            @apply w-full p-3 border border-gray-300 rounded-lg shadow-sm;
+        }
+
+        form .helptext {
+            @apply text-sm text-gray-500 mt-1;
+        }
+
+        /*
+          It styles "Your password can't be..."
+        */
+        form .errorlist {
+            @apply text-red-600 font-medium list-disc my-1 space-y-1;
+        }
+        
+        /* This just styles the bullet points from th error list */
+        form .errorlist li {
+            @apply text-sm;
+        }
+    </style>
+</head>
+<body class="h-full bg-gray-100">
+        <main class="min-h-screen flex flex-row justify-center py-12 px-4">
+             <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-xl">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Create Account</h2>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 mt-4"
+                    > Sign Up</button>
+                </form>
+                <p class="text-center text-gray-600 mt-8">Already have an account? 
+                    <a href="{% url 'login' %}" class="font-medium text-blue-600 hover:text-blue-500"> Login here</a>
+                </p>
+            </div>
+        </main>
+</body>
+</html>

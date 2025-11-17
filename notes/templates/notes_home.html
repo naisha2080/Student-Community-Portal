@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Sharing</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- 
+      This is to style the {{ form.as_p }}
+    -->
+    <style type="text/tailwindcss">
+        html {
+            font-family: 'Inter', sans-serif;
+        }
+
+        #upload-form p {
+            @apply mb-4;
+        }
+        #upload-form label {
+            @apply block font-medium text-gray-700 mb-1;
+        }
+        #upload-form input[type="text"],
+        #upload-form textarea,
+        #upload-form select {
+            @apply w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500;
+        }
+        #upload-form input[type="file"] {
+            @apply w-full p-2 border border-gray-300 rounded-lg file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100;
+        }
+        #upload-form .helptext {
+            @apply text-sm text-gray-500 mt-1;
+        }
+        #upload-form .errorlist {
+            @apply text-red-600 font-medium list-disc list-inside p-0 my-1 space-y-1;
+        }
+    </style>
+</head>
+
+<body class="h-full bg-gray-100 text-gray-900">
+
+    <!-- Our standard "sticky footer" layout -->
+    <div class="flex flex-col min-h-screen">
+
+        <!-- 
+          Standard Header
+        -->
+        <header class="bg-white shadow-md sticky top-0 z-50">
+            <div class="container mx-auto flex items-center justify-between p-4">
+                <nav>
+                    <a href="{% url 'home' %}" class="text-gray-600 hover:text-blue-600">Back to Home</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- 
+          MAIN Content
+        -->
+        <main class="flex-grow container mx-auto p-8">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+ <!-- 
+                  COLUMN 1: THE UPLOAD FORM
+                -->
+                <div class="md:col-span-1">
+                    <form id="upload-form" method="post" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-lg">
+                        {% csrf_token %}
+                        <h2 class="text-2xl font-bold mb-6">Upload a New Note</h2>
+                        
+                        <div>
+                            {{ form.as_p }}
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-300 mt-4">
+                            Upload Note
+                        </button>
+                    </form>
+                </div>
+<!-- 
+                  COLUMN 2: THE PYQS LIST
+                -->
+                <div class="md:col-span-2">
+                    <h2 class="text-3xl font-bold mb-8">Available Notes</h2>
+                    
+                    <!-- 
+                      This is the feed's own layout,
+                      - space-y-4: Stacks the note items vertically with 4 units
+                        of space between them.
+                    -->
+                    <div class="space-y-4">
+                        
+                        {% for note in all_notes %}
+                        
+                        <div class="bg-white p-5 rounded-lg shadow-md border border-gray-200 flex items-center justify-between">
+                            
+                            <!-- Left Side- Text Info -->
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800">
+                                    {{ note.topic_name }}
+                                </h3>
+                                <p class="text-gray-600 text-sm mb-2">
+                                    {{ note.subject_name }}
+                                </p>
+                                <small class="text-gray-500 text-xs">
+                                    Uploaded by: <span class="font-medium">{{ note.uploader.username }}</span> on {{ note.uploaded_at|date:"M d, Y, P" }}
+                                </small>
+                            </div>
+
+                            <!-- Right Side- Action Buttons -->
+                            <div class="flex space-x-2">
+                                <!-- Download Button -->
+                                <a href="{{ note.note_file.url }}" target="_blank" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 text-sm">
+                                    Download
+                                </a>
+
+                                <!-- Delete Button -->
+                                {% if note.uploader == user %}
+                                <form method="post" action="{% url 'note_delete' note.pk %}" class="m-0">
+                                    {% csrf_token %}
+                                    <button type="submit" class="bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition-colors text-sm">
+                                        Delete
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        {% empty %}
+                            <!-- Styled Empty message -->
+                            <div class="bg-white p-12 rounded-lg shadow-lg text-center text-gray-500">
+                                <p>No notes have been uploaded yet.</p>
+                                <p>Be the first to upload!</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Standard Footer -->
+        <footer class="mt-auto bg-gray-800 text-gray-300 p-8">
+            <div class="container mx-auto text-center">
+                <p>&copy; 2025 Built by the students, for the students.</p>
+            </div>
+        </footer>
+
+    </div> 
+</body>
+</html>

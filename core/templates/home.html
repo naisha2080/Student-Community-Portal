@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+     <style>
+        /* Apply base font and background color to the whole page */
+        html {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="h-full bg-gray-100 text-gray-900">
+    <div class="flex flex-col min-h-screen">
+        <header class="bg-white md-shadow sticky top-0 z-50">
+            <div class="container mx-auto flex items-center justify-between p-4">
+             <h1 class="text-xl font-bold text-gray-800">Welcome, {{ user.username }}!</h1>
+             <form action="{% url 'logout' %}" method="post" class="m-0">
+             {% csrf_token %}
+             <button type="submit" class="bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700">Logout</button>
+             </form>
+           </div>
+        </header>
+        <main class="flex-grow container mx-auto p-8">
+        <h2 class="text-3xl font-bold mb-8 text-center">What would you like to do today? </h2>
+        <nav>
+            <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              
+                <li>
+                    <!-- This matches name='lost_found_home' -->
+                    <a href="{% url 'lost_found_home' %}" class="block bg-white p-8 rounded-lg hover:shadow-xl">
+                        <span class="text-xl font-semibold text-blue-600">Lost and Found</span>
+                        <p class="text-gray-600 mt-2">Report a lost item or an item you found.</p>
+                    </a>
+                </li>
+                <li>
+                    <!-- This matches name='notes_home' -->
+                    <a href="{% url 'notes_home' %}" class= "block bg-white p-8 rounded-lg hover:shadow-xl">
+                        <span class="text-xl font-semibold text-blue-600">Upload/Download Notes</span>
+                        <p class="text-gray-600 mt-2">Share your notes or find notes from others.</p>
+                    </a>
+                </li>
+                <li>
+                    <!-- This matches name='announcement_home' -->
+                    <a href="{% url 'announcements_home' %}" class="block bg-white p-8 rounded-lg hover:shadow-xl">
+                        <span class="text-xl font-semibold text-blue-600">Announcements</span>
+                        <p class="text-gray-600 mt-2"> See the latest news and updates about SRMU.</p>
+                    </a>
+                </li>
+                <li>
+                    <!-- This matches name='pyq_home' -->
+                    <a href="{% url 'pyq_home' %}" class="block bg-white p-8 rounded-lg hover:shadow-xl">
+                        <span class="text-xl font-semibold text-blue-600">Previous Year Questions (PYQs)</span>
+                        <p class="text-gray-600 mt-2"> Prepare for exams with our PYQ bank.</p>
+                    </a>
+                </li>
+                  <li>
+                    <!-- This matches name='qa_forum_home' -->
+                    <a href="{% url 'qa_forum_home' %}" class="block bg-white p-8 rounded-lg hover:shadow-xl">
+                        <span class="text-xl font-semibold text-blue-600">Q&A Forum</span>
+                        <p class="text-gray-600 mt-2">Ask questions and get answers from peers.</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        </main>
+        <footer class="mt-auto bg-gray-800 text-gray-300 p-8">
+            <div class="container mx-auto text-center">
+                <p>&copy; 2025 Built by the students, for the students.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
